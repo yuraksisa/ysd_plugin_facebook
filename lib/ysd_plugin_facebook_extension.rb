@@ -20,6 +20,10 @@ module Huasi
 
        SystemConfiguration::Variable.first_or_create({:name => 'facebook.site_url'},
                                                      {:value => '', :description => 'Facebook APP Site URL', :module => :facebook})       
+     
+       Users::Group.first_or_create({:group => 'facebook'},
+                                    {:name => 'Facebook', :description => 'Facebook users'})
+
      end
      
      #

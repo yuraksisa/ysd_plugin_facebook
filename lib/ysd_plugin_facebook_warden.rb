@@ -24,10 +24,12 @@ module WardenStrategy
     #
     def authenticate!
       
-      success!(session[:fb_user])
+      profile = session[:fb_user]
+      profile.update_last_access
+
+      success!(profile)
 
     end
-
 
   end #AnonymousWardenStrategy
 end #AnonymousWardenStrategy	

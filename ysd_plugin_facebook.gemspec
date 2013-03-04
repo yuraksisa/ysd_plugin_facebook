@@ -1,6 +1,6 @@
 Gem::Specification.new do |s|
   s.name    = "ysd_plugin_facebook"
-  s.version = "0.1.9"
+  s.version = "0.1.17"
   s.authors = ["Yurak Sisa Dream"]
   s.date    = "2013-01-09"
   s.email   = ["yurak.sisa.dream@gmail.com"]
@@ -9,5 +9,6 @@ Gem::Specification.new do |s|
   s.summary = "Facebook integration"
 
   s.add_runtime_dependency "koala"
+  s.add_runtime_dependency "ysd_md_facebook"
    
 end

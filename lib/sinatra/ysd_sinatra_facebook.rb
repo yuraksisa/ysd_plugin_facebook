@@ -1,4 +1,5 @@
 require 'ysd_md_variable'
+require 'ysd_md_facebook_session'
 require 'koala'
 
 module Sinatra
@@ -16,13 +17,15 @@ module Sinatra
         #
         app.get '/fblogin' do 
          
+          if authenticated? # Make sure the user is disconnected 
+            logout
+          end
+
           app_id = SystemConfiguration::Variable.get_value('facebook.app_id')
           app_code = SystemConfiguration::Variable.get_value('facebook.app_code')
           site_url = SystemConfiguration::Variable.get_value('facebook.site_url')
-
           session['oauth'] = Koala::Facebook::OAuth.new(app_id, app_code, site_url + '/fblogincallback')
-
-		  redirect session['oauth'].url_for_oauth_code()  #Here we can tell permissions # redirect to facebook to get your code        
+		      redirect session['oauth'].url_for_oauth_code(:permissions => ["email", "user_likes", "user_birthday", "user_about_me"])  #Here we can tell permissions # redirect to facebook to get your code        
         	
         end
         
@@ -31,15 +34,11 @@ module Sinatra
         #
         app.get '/fblogincallback' do
 
-  		  session['access_token'] = session['oauth'].get_access_token(params[:code])
-
-          graph = Koala::Facebook::GraphAPI.new(session['access_token'])
-          
-          fb_profile = graph.get_object("me")
-
-          puts "PROFILE: #{fb_profile.inspect}"
-
-		  redirect '/'
+  		    session['access_token'] = session['oauth'].get_access_token(params[:code])
+          fb_session = Model::Facebook::Session.new(session['access_token'])
+  		    session[:fb_user] = fb_session.user_connected!
+          authenticate
+		      redirect '/'
 
         end
 
