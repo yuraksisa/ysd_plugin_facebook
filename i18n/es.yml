@@ -1,2 +1,4 @@
 fb_login_form:
   login_via_facebook: Conectar usando cuenta de facebook
+fb_login:
+  error: Error conectando usuario facebook

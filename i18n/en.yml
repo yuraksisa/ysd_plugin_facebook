@@ -1,2 +1,4 @@
 fb_login_form:
   login_via_facebook: Login via facebook
+fb_login:
+  error: Facebook login error

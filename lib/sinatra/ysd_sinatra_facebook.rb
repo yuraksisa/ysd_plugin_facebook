@@ -36,9 +36,13 @@ module Sinatra
 
   		    session['access_token'] = session['oauth'].get_access_token(params[:code])
           fb_session = Model::Facebook::Session.new(session['access_token'])
-  		    session[:fb_user] = fb_session.user_connected!
-          authenticate
-		      redirect '/'
+          if profile = fb_session.user_connected!
+   		      session[:fb_user] = profile.username
+            authenticate
+          else
+            flash[:error] = t.fb_login.error
+		      end
+          redirect '/'
 
         end
 

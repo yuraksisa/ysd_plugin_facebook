@@ -24,11 +24,12 @@ module WardenStrategy
     #
     def authenticate!
       
-      profile = session[:fb_user]
-      profile.update_last_access
-
-      success!(profile)
-
+      if profile = Users::Profile.get(session[:fb_user])
+        profile.update_last_access
+        success!(profile)
+      else
+        fail!("Error login facebook user")
+      end
     end
 
   end #AnonymousWardenStrategy
